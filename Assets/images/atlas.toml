@@ -1,0 +1,13 @@
+name = "atlas"
+output_path = "../"
+output_type = "Binary"
+folders = ["pong"]
+
+[image_options]
+max_size = 4096
+show_extension = false
+output_extension = "Qoi"
+
+[features]
+nine_patch = true
+
