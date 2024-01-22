@@ -22,7 +22,7 @@ public class PingPongGame : GameApp
     public override void LoadContent()
     {
         CommandBuffer cmdBuf = GraphicsDevice.AcquireCommandBuffer();
-        Resource.ArcherFont = Font.Load(GraphicsDevice, cmdBuf, "Assets/font/PressStart2P-Regular.ttf");
+        Resource.PressStart2PFont = Font.Load(GraphicsDevice, cmdBuf, "Assets/font/PressStart2P-Regular.ttf");
         Resource.AtlasTexture = Texture.FromImageFile(GraphicsDevice, cmdBuf, "Assets/atlas.qoi");
 
         Resource.Atlas = Atlas.LoadFromFile("Assets/atlas.bin", Resource.AtlasTexture, Atlas.FileType.Bin, true);

@@ -1,9 +1,8 @@
 using MoonWorks.Math;
 using MoonWorks.Math.Float;
+using Riateu;
 using Riateu.Components;
 using Riateu.Physics;
-
-namespace Riateu;
 
 public class Ball : Entity 
 {
