@@ -63,7 +63,6 @@ public class SimpleScene : Scene
         batch.PushMatrix(camera);
         batch.Draw(buffer);
         batch.PopMatrix();
-
         buffer.EndRenderPass();
     }
 

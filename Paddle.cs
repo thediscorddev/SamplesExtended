@@ -14,7 +14,7 @@ public class Paddle : Entity
     public Paddle(KeyCode up, KeyCode down, bool left = true) 
     {
         sprite = new SpriteRenderer(Resource.AtlasTexture, Resource.Atlas["pong/paddle"]);
-        sprite.Flip = !left;
+        sprite.FlipX = !left;
         AddComponent(sprite);
 
         AddComponent(new PhysicsComponent(new AABB(this, 0, 0, 4, 24), OnCollided));
