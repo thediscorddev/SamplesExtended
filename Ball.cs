@@ -16,7 +16,6 @@ public class Ball : Entity
     {
         sprite = AnimatedSprite.Create(Resource.AtlasTexture, Resource.Animations["pong/ball"]);
         sprite.FPS = 10;
-        sprite.Loop = true;
         sprite.Play("idle");
         AddComponent(sprite);
 
