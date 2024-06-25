@@ -1,4 +1,5 @@
 using MoonWorks.Graphics;
+using MoonWorks.Graphics.Font;
 using MoonWorks.Input;
 using MoonWorks.Math.Float;
 using Riateu;
@@ -9,13 +10,19 @@ public class SimpleScene : Scene
     private Camera camera;
     private Ball ball;
     private int[] scores;
-    private DynamicText scoreText;
+    private Batch batch;
+    private TextBatch textBatch;
+    private string scoreText = "0     0";
 
-    public SimpleScene(GameApp game) : base(game) {}
+    public SimpleScene(GameApp game) : base(game) 
+    {
+        batch = new Batch(game.GraphicsDevice, 512, 320);
+        textBatch = new TextBatch(game.GraphicsDevice);
+        scores = new int[2];
+    }
 
     public override void Begin()
     {
-        scores = new int[2];
         var player1 = new Paddle(KeyCode.W, KeyCode.S);
         player1.PosY = (PingPongGame.ViewportHeight * 0.5f) - 12;
         Add(player1);
@@ -29,9 +36,7 @@ public class SimpleScene : Scene
         ball.PosY = (PingPongGame.ViewportHeight * 0.5f) - 4;
         Add(ball);
         ball.Velocity = new Vector2(-1, 0);
-        camera = new Camera(512, 320);
-
-        scoreText = new DynamicText(GameInstance.GraphicsDevice, Resource.PressStart2PFont, "0     0", 16);
+        camera = new Camera(PingPongGame.ViewportWidth, PingPongGame.ViewportHeight);
     }
 
     public override void Update(double delta) 
@@ -41,29 +46,35 @@ public class SimpleScene : Scene
             ball.Position = new Vector2((PingPongGame.ViewportWidth * 0.5f) - 8, (PingPongGame.ViewportHeight * 0.5f) - 4);
             ball.Velocity = new Vector2(-1, 0);
             scores[1] += 1;
-            scoreText.Text = $"{scores[0]}     {scores[1]}";
+            scoreText = $"{scores[0]}     {scores[1]}";
         }
         else if (ball.PosX > PingPongGame.ViewportWidth + 30) 
         {
             ball.Position = new Vector2((PingPongGame.ViewportWidth * 0.5f) - 8, (PingPongGame.ViewportHeight * 0.5f) - 4);
             ball.Velocity = new Vector2(1, 0);
             scores[0] += 1;
-            scoreText.Text = $"{scores[0]}     {scores[1]}";
+            scoreText = $"{scores[0]}     {scores[1]}";
         }
     }
 
-    public override void Draw(CommandBuffer buffer, Texture backbuffer, Batch batch)
+    public override void Render(CommandBuffer buffer, Texture backbuffer)
     {
-        batch.Add(SceneCanvas.CanvasTexture, GameContext.GlobalSampler, Vector2.Zero, Matrix3x2.Identity);
-        scoreText.Draw(batch, new Vector2((PingPongGame.ViewportWidth) - (scoreText.Bounds.Width * 0.5f), 0));
-        batch.FlushVertex(buffer);
+        batch.Begin(Resource.AtlasTexture, DrawSampler.PointClamp);
+        EntityList.Draw(buffer, batch);
+        batch.End(buffer);
 
-        buffer.BeginRenderPass(new ColorAttachmentInfo(backbuffer, Color.Black));
-        buffer.BindGraphicsPipeline(GameContext.DefaultPipeline);
+        textBatch.Start(Resource.PressStart2PFont);
+        textBatch.Add(scoreText, 16, Color.White, HorizontalAlignment.Center, VerticalAlignment.Baseline);
+        textBatch.UploadBufferData(buffer);
+
+        RenderPass renderPass = buffer.BeginRenderPass(new ColorAttachmentInfo(backbuffer, true, Color.Black));
         batch.PushMatrix(camera);
-        batch.Draw(buffer);
+        batch.Render(renderPass);
         batch.PopMatrix();
-        buffer.EndRenderPass();
+
+        renderPass.BindGraphicsPipeline(GameContext.MSDFPipeline);
+        textBatch.Render(renderPass, camera.Transform);
+        buffer.EndRenderPass(renderPass);
     }
 
     public override void End()

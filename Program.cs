@@ -9,8 +9,7 @@ internal interface Program
     [STAThread]
     protected internal static void Main(string[] args) 
     {
-        var windowInfo = new WindowCreateInfo("Hello Game", ScreenWidth, ScreenHeight, 
-            ScreenMode.Windowed, PresentMode.FIFO);
+        var windowInfo = new WindowCreateInfo("Hello Game", ScreenWidth, ScreenHeight, ScreenMode.Windowed);
 
         var frameLimiter = new FrameLimiterSettings(FrameLimiterMode.Capped, 60);
 

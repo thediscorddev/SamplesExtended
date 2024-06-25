@@ -1,4 +1,5 @@
 using MoonWorks.Input;
+using MoonWorks.Math.Float;
 using Riateu;
 using Riateu.Components;
 using Riateu.Physics;
@@ -9,6 +10,8 @@ public class Paddle : Entity
     private SpriteRenderer sprite;
     private KeyCode up;
     private KeyCode down;
+    private PhysicsComponent area;
+    private bool left;
     public const float Speed = 100.0f;
 
     public Paddle(KeyCode up, KeyCode down, bool left = true) 
@@ -17,18 +20,10 @@ public class Paddle : Entity
         sprite.FlipX = !left;
         AddComponent(sprite);
 
-        AddComponent(new PhysicsComponent(new AABB(this, 0, 0, 4, 24), OnCollided));
+        AddComponent(area = new PhysicsComponent(new AABB(this, 0, 0, 4, 24)));
         this.up = up;
         this.down = down;
-    }
-
-    private void OnCollided(Entity entity, PhysicsComponent component) 
-    {
-        if (entity is Ball ball) 
-        {
-            ball.Velocity.X *= -1;
-            ball.Velocity.Y += 100 * 0.005f;
-        }
+        this.left = left;
     }
 
     public override void Update(double delta)
@@ -44,6 +39,16 @@ public class Paddle : Entity
         else if (PosY < 0) 
         {
             PosY = 0;
+        }
+        sbyte lVal = left ? (sbyte)-1 : (sbyte)1;
+
+        if (area.CheckAll<Ball>(Vector2.Zero, out Ball ball)) 
+        {
+            if (lVal == ball.Velocity.X)
+            {
+                ball.Velocity.X *= -1;
+                ball.Velocity.Y += 100 * 0.005f;
+            }
         }
         
         base.Update(delta);
