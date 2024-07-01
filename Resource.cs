@@ -7,6 +7,6 @@ public static class Resource
     public static Texture PlayerSprite;
     public static Texture AtlasTexture;
     public static Atlas Atlas;
-    public static Font PressStart2PFont;
+    public static SpriteFont PressStart2PFont;
     public static AnimationStorage Animations;
 }

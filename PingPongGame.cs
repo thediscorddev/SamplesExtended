@@ -23,14 +23,16 @@ public class PingPongGame : GameApp
     {
         CommandBuffer cmdBuf = GraphicsDevice.AcquireCommandBuffer();
 
-        Resource.PressStart2PFont = Font.Load(GraphicsDevice, cmdBuf, "Assets/font/PressStart2P-Regular.ttf");
 
         using ResourceUploader uploader = new ResourceUploader(GraphicsDevice);
         Resource.AtlasTexture = uploader.CreateTexture2DFromCompressed("Assets/atlas.qoi");
+
         uploader.Upload();
 
 
         Resource.Atlas = Atlas.LoadFromFile("Assets/atlas.bin", Resource.AtlasTexture, Atlas.FileType.Bin, true);
+
+        Resource.PressStart2PFont = new SpriteFont(Resource.AtlasTexture, Resource.Atlas["fonts/PressStart2P_0"], "Assets/font/PressStart2P.fnt");
         Resource.Animations = AnimationStorage.Create("Assets/images/animation.json", Resource.Atlas);
 
         GraphicsDevice.Submit(cmdBuf);

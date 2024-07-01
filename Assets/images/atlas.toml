@@ -1,7 +1,7 @@
 name = "atlas"
 output_path = "../"
 output_type = "Binary"
-folders = ["pong"]
+folders = ["pong", "fonts"]
 
 [image_options]
 max_size = 4096

@@ -12,7 +12,7 @@
   </ItemGroup>
 
  <ItemGroup>
-    <Content Include="runtimes\lib64\**\*.*">
+    <Content Include="../Riateu/runtimes/lib64/**/*.*">
       <Link>runtimes/linux-x64/native/%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

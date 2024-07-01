@@ -11,13 +11,11 @@ public class SimpleScene : Scene
     private Ball ball;
     private int[] scores;
     private Batch batch;
-    private TextBatch textBatch;
     private string scoreText = "0     0";
 
     public SimpleScene(GameApp game) : base(game) 
     {
         batch = new Batch(game.GraphicsDevice, 512, 320);
-        textBatch = new TextBatch(game.GraphicsDevice);
         scores = new int[2];
     }
 
@@ -61,19 +59,12 @@ public class SimpleScene : Scene
     {
         batch.Begin(Resource.AtlasTexture, DrawSampler.PointClamp);
         EntityList.Draw(buffer, batch);
+        batch.Draw(Resource.PressStart2PFont, scoreText, new Vector2(PingPongGame.ViewportWidth * 0.5f, 0), Color.White, new Vector2(0.2f), Alignment.Center);
         batch.End(buffer);
 
-        textBatch.Start(Resource.PressStart2PFont);
-        textBatch.Add(scoreText, 16, Color.White, HorizontalAlignment.Center, VerticalAlignment.Baseline);
-        textBatch.UploadBufferData(buffer);
-
         RenderPass renderPass = buffer.BeginRenderPass(new ColorAttachmentInfo(backbuffer, true, Color.Black));
-        batch.PushMatrix(camera);
+        batch.BindUniformMatrix(buffer, camera, 0);
         batch.Render(renderPass);
-        batch.PopMatrix();
-
-        renderPass.BindGraphicsPipeline(GameContext.MSDFPipeline);
-        textBatch.Render(renderPass, camera.Transform);
         buffer.EndRenderPass(renderPass);
     }
 
