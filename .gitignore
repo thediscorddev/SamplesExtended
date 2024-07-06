@@ -3,3 +3,4 @@ bin/
 obj/
 *.txt
 *.ini
+.sunpack-dep/

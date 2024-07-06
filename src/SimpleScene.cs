@@ -1,5 +1,4 @@
 using MoonWorks.Graphics;
-using MoonWorks.Graphics.Font;
 using MoonWorks.Input;
 using MoonWorks.Math.Float;
 using Riateu;

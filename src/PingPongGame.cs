@@ -1,6 +1,5 @@
 using MoonWorks;
 using MoonWorks.Graphics;
-using MoonWorks.Graphics.Font;
 using Riateu;
 using Riateu.Graphics;
 
@@ -25,15 +24,15 @@ public class PingPongGame : GameApp
 
 
         using ResourceUploader uploader = new ResourceUploader(GraphicsDevice);
-        Resource.AtlasTexture = uploader.CreateTexture2DFromCompressed("Assets/atlas.qoi");
+        Resource.AtlasTexture = uploader.CreateTexture2DFromCompressed("../Assets/atlas.qoi");
 
         uploader.Upload();
 
 
-        Resource.Atlas = Atlas.LoadFromFile("Assets/atlas.bin", Resource.AtlasTexture, Atlas.FileType.Bin, true);
+        Resource.Atlas = Atlas.LoadFromFile("../Assets/atlas.bin", Resource.AtlasTexture, Atlas.FileType.Bin, true);
 
-        Resource.PressStart2PFont = new SpriteFont(Resource.AtlasTexture, Resource.Atlas["fonts/PressStart2P_0"], "Assets/font/PressStart2P.fnt");
-        Resource.Animations = AnimationStorage.Create("Assets/images/animation.json", Resource.Atlas);
+        Resource.PressStart2PFont = new SpriteFont(Resource.AtlasTexture, Resource.Atlas["fonts/PressStart2P_0"], "../Assets/font/PressStart2P.fnt");
+        Resource.Animations = AnimationStorage.Create("../Assets/images/animation.json", Resource.Atlas);
 
         GraphicsDevice.Submit(cmdBuf);
     }
