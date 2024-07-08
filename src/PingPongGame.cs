@@ -1,5 +1,7 @@
 using MoonWorks;
 using MoonWorks.Graphics;
+using Pong.ECS;
+using Pong;
 using Riateu;
 using Riateu.Graphics;
 
@@ -22,23 +24,23 @@ public class PingPongGame : GameApp
     {
         CommandBuffer cmdBuf = GraphicsDevice.AcquireCommandBuffer();
 
-
         using ResourceUploader uploader = new ResourceUploader(GraphicsDevice);
-        Resource.AtlasTexture = uploader.CreateTexture2DFromCompressed("../Assets/atlas.qoi");
+        Resource.AtlasTexture = uploader.CreateTexture2DFromCompressed("Assets/atlas.qoi");
 
         uploader.Upload();
 
 
-        Resource.Atlas = Atlas.LoadFromFile("../Assets/atlas.bin", Resource.AtlasTexture, Atlas.FileType.Bin, true);
+        Resource.Atlas = Atlas.LoadFromFile("Assets/atlas.bin", Resource.AtlasTexture, Atlas.FileType.Bin, true);
 
-        Resource.PressStart2PFont = new SpriteFont(Resource.AtlasTexture, Resource.Atlas["fonts/PressStart2P_0"], "../Assets/font/PressStart2P.fnt");
-        Resource.Animations = AnimationStorage.Create("../Assets/images/animation.json", Resource.Atlas);
+        Resource.PressStart2PFont = new SpriteFont(Resource.AtlasTexture, Resource.Atlas["fonts/PressStart2P_0"], "Assets/font/PressStart2P.fnt");
+        Resource.Animations = AnimationStorage.Create("Assets/images/animation.json", Resource.Atlas);
 
         GraphicsDevice.Submit(cmdBuf);
     }
 
     public override void Initialize()
     {
-        Scene = new SimpleScene(this);
+        // Scene = new SimpleScene(this);
+        Scene = new SimpleWorld(this);
     }
 }

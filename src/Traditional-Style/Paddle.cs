@@ -4,7 +4,7 @@ using Riateu;
 using Riateu.Components;
 using Riateu.Physics;
 
-
+namespace Pong;
 public class Paddle : Entity 
 {
     private SpriteRenderer sprite;

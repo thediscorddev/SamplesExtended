@@ -8,5 +8,6 @@
 			"Branch": "refresh2",
 			"Project": "Riateu/Riateu.Vulkan.csproj"
 		}
-	]
+	],
+	"ResolvePackages": {}
 }

@@ -4,6 +4,7 @@ using MoonWorks.Math.Float;
 using Riateu;
 using Riateu.Graphics;
 
+namespace Pong;
 public class SimpleScene : Scene
 {
     private Camera camera;

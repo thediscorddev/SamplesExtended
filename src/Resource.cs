@@ -1,5 +1,4 @@
 using MoonWorks.Graphics;
-using MoonWorks.Graphics.Font;
 using Riateu.Graphics;
 
 public static class Resource 

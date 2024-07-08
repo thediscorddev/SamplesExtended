@@ -4,6 +4,8 @@ using Riateu;
 using Riateu.Components;
 using Riateu.Physics;
 
+namespace Pong;
+
 public class Ball : Entity 
 {
     public Vector2 Velocity;
