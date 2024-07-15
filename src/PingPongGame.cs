@@ -1,6 +1,5 @@
 using MoonWorks;
 using MoonWorks.Graphics;
-using Pong.ECS;
 using Pong;
 using Riateu;
 using Riateu.Graphics;
@@ -40,7 +39,6 @@ public class PingPongGame : GameApp
 
     public override void Initialize()
     {
-        // Scene = new SimpleScene(this);
-        Scene = new SimpleWorld(this);
+        Scene = new SimpleScene(this);
     }
 }
