@@ -4,3 +4,4 @@ obj/
 *.txt
 *.ini
 .sunpack-dep/
+.zed/

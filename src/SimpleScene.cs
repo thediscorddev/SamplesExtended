@@ -37,7 +37,7 @@ public class SimpleScene : Scene
         camera = new Camera(PingPongGame.ViewportWidth, PingPongGame.ViewportHeight);
     }
 
-    public override void Update(double delta) 
+    public override void Process(double delta) 
     {
         if (ball.PosX < -30) 
         {

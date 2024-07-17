@@ -3,10 +3,6 @@
   <PropertyGroup>
     <SunpackDir>$(MSBuildThisFileDirectory)</SunpackDir>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="$(SunpackDir).sunpack-dep/Riateu/Riateu/Riateu.Vulkan.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="$(SunpackDir).sunpack-dep/Riateu/**/*" />
-  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup />
 </Project>
