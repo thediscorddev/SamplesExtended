@@ -59,7 +59,7 @@ public class SimpleScene : Scene
     {
         batch.Begin(Resource.AtlasTexture, DrawSampler.PointClamp);
         EntityList.Draw(buffer, batch);
-        batch.Draw(Resource.PressStart2PFont, scoreText, new Vector2(PingPongGame.ViewportWidth * 0.5f, 0), Color.White, new Vector2(0.2f), Alignment.Center);
+        batch.Draw(Resource.PressStart2PFont, scoreText, new Vector2(PingPongGame.ViewportWidth * 0.5f, 0), Color.White, new Vector2(0.2f), FontAlignment.Center);
         batch.End(buffer);
 
         RenderPass renderPass = buffer.BeginRenderPass(new ColorAttachmentInfo(backbuffer, true, Color.Black));
