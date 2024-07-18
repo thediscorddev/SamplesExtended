@@ -55,15 +55,16 @@ public class SimpleScene : Scene
         }
     }
 
-    public override void Render(RenderQueue queue)
+    public override void Render(BackbufferTarget backbuffer)
     {
-        batch.Begin(Resource.AtlasTexture, DrawSampler.PointClamp);
+        batch.Begin(Resource.AtlasTexture, DrawSampler.PointClamp, camera);
         EntityList.Draw(batch);
         batch.Draw(Resource.PressStart2PFont, scoreText, new Vector2(PingPongGame.ViewportWidth * 0.5f, 0), Color.White, new Vector2(0.2f), FontAlignment.Center);
         batch.End();
 
-        batch.BindUniformMatrix(camera);
-        queue.Render(batch);
+        backbuffer.BeginRendering(Color.Black);
+        backbuffer.Render(batch);
+        backbuffer.EndRendering();
     }
 
     public override void End()
