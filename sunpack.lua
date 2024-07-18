@@ -4,7 +4,7 @@ Package "Pong"
             }
     Dependencies {
         Riateu = {
-            Repository("https://github.com/Terria-K"),
+            Repository("https://github.com/TeuriaGames"),
             Branch(""),
             Project("Riateu/Riateu.Vulkan.csproj"),
         },
