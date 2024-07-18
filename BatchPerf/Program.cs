@@ -111,10 +111,10 @@ public class TestLoop : GameLoop
 
     public override void Render(BackbufferTarget backbuffer)
     {
-        batch.Begin(BatchPerf.TeuriaLogo, DrawSampler.PointClamp, camera);
         ReadOnlySpan<Teuria> teurias = Teurias.AsSpan();
         for (int i = 0; i < count; i += BatchSize)
         {
+            batch.Begin(BatchPerf.TeuriaLogo, DrawSampler.PointClamp, camera);
             var c = Math.Min(count - i, BatchSize);
 
             for (int j = 0; j < c; j++) 
@@ -124,12 +124,12 @@ public class TestLoop : GameLoop
             }
 
             // Creates new draw call
-            batch.Compose(BatchPerf.TeuriaLogo, DrawSampler.PointClamp);
+            batch.End(false);
         }
-        batch.Compose(BatchPerf.FontTexture, DrawSampler.PointClamp);
+        batch.Begin(BatchPerf.FontTexture, DrawSampler.PointClamp, camera);
         batch.Draw(BatchPerf.Font, $"FPS: {FPS}", Vector2.Zero, Color.White, new Vector2(0.2f));
         batch.Draw(BatchPerf.Font, $"Object Count: {count}", new Vector2(0, 20), Color.White, new Vector2(0.2f));
-        batch.End();
+        batch.End(true);
 
         backbuffer.BeginRendering(Color.CornflowerBlue);
         backbuffer.Render(batch);
