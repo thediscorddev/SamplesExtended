@@ -23,9 +23,9 @@ public class BatchPerf : GameApp
         Font = storage.LoadFont("Assets/PressStart2P.fnt", FontTexture);
     }
 
-    public override void Initialize()
+    public override GameLoop Initialize()
     {
-        Scene = new TestLoop(this);
+        return new TestLoop(this);
     }
 
     public static void Main() 
@@ -71,7 +71,7 @@ public class TestLoop : GameLoop
 
     public override void Update(double delta)
     {
-        if (Input.InputSystem.Keyboard.IsPressed(MoonWorks.Input.KeyCode.Up)) 
+        if (Input.Keyboard.IsPressed(MoonWorks.Input.KeyCode.Up)) 
         {
             Random random = new Random();
             for (int i = 0; i < INC_DEC_COUNT; i++) 
@@ -87,7 +87,7 @@ public class TestLoop : GameLoop
                 count++;
             }
         }
-        else if (Input.InputSystem.Keyboard.IsPressed(MoonWorks.Input.KeyCode.Down)) 
+        else if (Input.Keyboard.IsPressed(MoonWorks.Input.KeyCode.Down)) 
         {
             count = Math.Max(0, count - INC_DEC_COUNT);
         }
@@ -131,9 +131,9 @@ public class TestLoop : GameLoop
         batch.Draw(BatchPerf.Font, $"Object Count: {count}", new Vector2(0, 20), Color.White, new Vector2(0.2f));
         batch.End(true);
 
-        backbuffer.BeginRendering(Color.CornflowerBlue);
-        backbuffer.Render(batch);
-        backbuffer.EndRendering();
+        RenderPass renderPass = backbuffer.BeginRendering(Color.CornflowerBlue);
+        batch.Render(renderPass);
+        backbuffer.EndRendering(renderPass);
     }
 }
 

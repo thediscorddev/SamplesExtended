@@ -56,11 +56,11 @@ public class Paddle : Entity
 
     private int GetAxis(KeyCode up, KeyCode down) 
     {
-        if (Scene.GameInstance.Inputs.Keyboard.IsDown(up)) 
+        if (Input.Keyboard.IsDown(up)) 
         {
             return -1;
         }
-        if (Scene.GameInstance.Inputs.Keyboard.IsDown(down)) 
+        if (Input.Keyboard.IsDown(down)) 
         {
             return 1;
         }

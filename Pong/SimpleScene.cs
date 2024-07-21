@@ -62,9 +62,9 @@ public class SimpleScene : Scene
         batch.Draw(Resource.PressStart2PFont, scoreText, new Vector2(PingPongGame.ViewportWidth * 0.5f, 0), Color.White, new Vector2(0.2f), FontAlignment.Center);
         batch.End(true);
 
-        backbuffer.BeginRendering(Color.Black);
-        backbuffer.Render(batch);
-        backbuffer.EndRendering();
+        RenderPass renderPass = backbuffer.BeginRendering(Color.Black);
+        batch.Render(renderPass);
+        backbuffer.EndRendering(renderPass);
     }
 
     public override void End()

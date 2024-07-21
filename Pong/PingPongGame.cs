@@ -29,8 +29,8 @@ public class PingPongGame : GameApp
         Resource.Animations = storage.LoadAnimations("Assets/images/animation.json", Resource.Atlas);
     }
 
-    public override void Initialize()
+    public override GameLoop Initialize()
     {
-        Scene = new SimpleScene(this);
+        return new SimpleScene(this);
     }
 }
