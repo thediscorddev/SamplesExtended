@@ -57,7 +57,7 @@ public class SimpleScene : Scene
 
     public override void Render(BackbufferTarget backbuffer)
     {
-        batch.Begin(Resource.AtlasTexture, DrawSampler.PointClamp, camera);
+        batch.Begin(Resource.Atlas, DrawSampler.PointClamp, camera);
         EntityList.Draw(batch);
         batch.Draw(Resource.PressStart2PFont, scoreText, new Vector2(PingPongGame.ViewportWidth * 0.5f, 0), Color.White, new Vector2(0.2f), FontAlignment.Center);
         batch.End(true);

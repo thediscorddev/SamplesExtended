@@ -16,7 +16,7 @@ public class Paddle : Entity
 
     public Paddle(KeyCode up, KeyCode down, bool left = true) 
     {
-        sprite = new SpriteRenderer(Resource.AtlasTexture, Resource.Atlas["pong/paddle"]);
+        sprite = new SpriteRenderer(Resource.Atlas, Resource.Atlas["pong/paddle"]);
         sprite.FlipX = !left;
         AddComponent(sprite);
 

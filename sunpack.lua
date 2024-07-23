@@ -6,6 +6,6 @@ Package "Pong"
         Riateu = {
             Repository("https://github.com/TeuriaGames"),
             Branch(""),
-            Project("Riateu/Riateu.Vulkan.csproj"),
+            Project("Riateu/Riateu.csproj"),
         },
     }

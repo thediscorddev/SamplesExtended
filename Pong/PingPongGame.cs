@@ -2,7 +2,6 @@ using MoonWorks;
 using Pong;
 using Riateu;
 using Riateu.Content;
-using Riateu.Graphics;
 
 public class PingPongGame : GameApp
 {
@@ -21,11 +20,8 @@ public class PingPongGame : GameApp
 
     public override void LoadContent(AssetStorage storage)
     {
-        Resource.AtlasTexture = storage.LoadTexture("Assets/atlas.qoi");
-
-        Resource.Atlas = storage.LoadAtlas("Assets/atlas.bin", Resource.AtlasTexture, true, JsonType.Bin);
-
-        Resource.PressStart2PFont = storage.LoadFont("Assets/font/PressStart2P.fnt", Resource.AtlasTexture, Resource.Atlas["fonts/PressStart2P_0"]);
+        Resource.Atlas = storage.CreateAtlas("Assets/images");
+        Resource.PressStart2PFont = storage.LoadFont("Assets/font/PressStart2P.fnt", Resource.Atlas, Resource.Atlas["fonts/PressStart2P_0"]);
         Resource.Animations = storage.LoadAnimations("Assets/images/animation.json", Resource.Atlas);
     }
 

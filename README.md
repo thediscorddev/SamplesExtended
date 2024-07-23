@@ -2,7 +2,7 @@
 
 These are the samples projects from Riateu. All written in C#
 
-#### Current update: 07-22-2024
+#### Current update: 07-23-2024
 
 |Project|Description|Preview|
 |----|----|----|

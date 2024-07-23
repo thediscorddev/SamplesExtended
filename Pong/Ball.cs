@@ -16,7 +16,7 @@ public class Ball : Entity
 
     public Ball() 
     {
-        sprite = AnimatedSprite.Create(Resource.AtlasTexture, Resource.Animations["pong/ball"]);
+        sprite = AnimatedSprite.Create(Resource.Atlas, Resource.Animations["pong/ball"]);
         sprite.FPS = 10;
         sprite.Play("idle");
         AddComponent(sprite);
