@@ -1,10 +1,9 @@
 ﻿using System;
-using MoonWorks;
-using MoonWorks.Graphics;
-using MoonWorks.Math.Float;
+using System.Numerics;
 using Riateu;
 using Riateu.Content;
 using Riateu.Graphics;
+using Riateu.Inputs;
 
 public class BatchPerf : GameApp
 {
@@ -12,7 +11,7 @@ public class BatchPerf : GameApp
     public static Texture FontTexture;
     public static SpriteFont Font;
 
-    public BatchPerf(string title, uint width, uint height, ScreenMode screenMode = ScreenMode.Windowed, bool debugMode = false) : base(title, width, height, screenMode, debugMode)
+    public BatchPerf(WindowSettings settings, GraphicsSettings graphicsSettings) : base(settings, graphicsSettings)
     {
     }
 
@@ -30,7 +29,10 @@ public class BatchPerf : GameApp
 
     public static void Main() 
     {
-        BatchPerf batchPerf = new BatchPerf("Batch Performance", 1024, 640);
+        BatchPerf batchPerf = new BatchPerf(
+            new WindowSettings("Batch Performance", 1024, 640),
+            GraphicsSettings.Default
+        );
         batchPerf.Run();
     }
 }
@@ -71,7 +73,7 @@ public class TestLoop : GameLoop
 
     public override void Update(double delta)
     {
-        if (Input.Keyboard.IsPressed(MoonWorks.Input.KeyCode.Up)) 
+        if (Input.Keyboard.IsPressed(KeyCode.Up)) 
         {
             Random random = new Random();
             for (int i = 0; i < INC_DEC_COUNT; i++) 
@@ -87,7 +89,7 @@ public class TestLoop : GameLoop
                 count++;
             }
         }
-        else if (Input.Keyboard.IsPressed(MoonWorks.Input.KeyCode.Down)) 
+        else if (Input.Keyboard.IsPressed(KeyCode.Down)) 
         {
             count = Math.Max(0, count - INC_DEC_COUNT);
         }
@@ -109,7 +111,7 @@ public class TestLoop : GameLoop
         FPS = Time.FPS;
     }
 
-    public override void Render(BackbufferTarget backbuffer)
+    public override void Render(RenderTarget backbuffer)
     {
         ReadOnlySpan<Teuria> teurias = Teurias.AsSpan();
         for (int i = 0; i < count; i += BatchSize)
@@ -131,9 +133,9 @@ public class TestLoop : GameLoop
         batch.Draw(BatchPerf.Font, $"Object Count: {count}", new Vector2(0, 20), Color.White, new Vector2(0.2f));
         batch.End(true);
 
-        RenderPass renderPass = backbuffer.BeginRendering(Color.CornflowerBlue);
+        RenderPass renderPass = GraphicsDevice.BeginTarget(backbuffer, Color.CornflowerBlue, true);
         batch.Render(renderPass);
-        backbuffer.EndRendering(renderPass);
+        GraphicsDevice.EndTarget(renderPass);
     }
 }
 
