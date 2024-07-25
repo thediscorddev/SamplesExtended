@@ -1,7 +1,7 @@
-using MoonWorks.Math;
-using MoonWorks.Math.Float;
+using System.Numerics;
 using Riateu;
 using Riateu.Components;
+using Riateu.Graphics;
 using Riateu.Physics;
 
 namespace Pong;
@@ -27,8 +27,8 @@ public class Ball : Entity
     public override void Update(double delta)
     {
         float fDelta = (float)delta;
-        Velocity.X = MathHelper.Clamp(Velocity.X, -SpeedLimitX, SpeedLimitX);
-        Velocity.Y = MathHelper.Clamp(Velocity.Y, -SpeedLimitY, SpeedLimitY);
+        Velocity.X = MathUtils.Clamp(Velocity.X, -SpeedLimitX, SpeedLimitX);
+        Velocity.Y = MathUtils.Clamp(Velocity.Y, -SpeedLimitY, SpeedLimitY);
 
         PosX += Velocity.X * fDelta * Speed;
         PosY += Velocity.Y * fDelta * Speed;

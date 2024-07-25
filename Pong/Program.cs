@@ -1,5 +1,5 @@
 ﻿using System;
-using MoonWorks;
+using Riateu;
 
 internal interface Program
 {
@@ -9,11 +9,11 @@ internal interface Program
     [STAThread]
     protected internal static void Main(string[] args) 
     {
-        var windowInfo = new WindowCreateInfo("Hello Game", ScreenWidth, ScreenHeight, ScreenMode.Windowed);
 
-        var frameLimiter = new FrameLimiterSettings(FrameLimiterMode.Capped, 60);
-
-        var helloGame = new PingPongGame("Hello Game", ScreenWidth, ScreenHeight, debugMode: true);
+        var helloGame = new PingPongGame(
+            new WindowSettings("Ping Pong", 1024, 640, WindowMode.Windowed),
+            GraphicsSettings.Default
+        );
         helloGame.Run();
     }
 }

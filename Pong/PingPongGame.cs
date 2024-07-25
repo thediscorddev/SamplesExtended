@@ -1,4 +1,3 @@
-using MoonWorks;
 using Pong;
 using Riateu;
 using Riateu.Content;
@@ -8,13 +7,7 @@ public class PingPongGame : GameApp
     public const int ViewportWidth = 256;
     public const int ViewportHeight = 160;
 
-    public PingPongGame(WindowCreateInfo windowCreateInfo, FrameLimiterSettings frameLimiterSettings, int targetTimestep = 60, bool debugMode = false) 
-        : base(windowCreateInfo, frameLimiterSettings, targetTimestep, debugMode)
-    {
-    }
-
-    public PingPongGame(string title, uint width, uint height, ScreenMode screenMode = ScreenMode.Windowed, bool debugMode = false) 
-        : base(title, width, height, screenMode, debugMode)
+    public PingPongGame(WindowSettings settings, GraphicsSettings graphicsSettings) : base(settings, graphicsSettings)
     {
     }
 

@@ -1,7 +1,7 @@
-using MoonWorks.Input;
-using MoonWorks.Math.Float;
+using System.Numerics;
 using Riateu;
 using Riateu.Components;
+using Riateu.Inputs;
 using Riateu.Physics;
 
 namespace Pong;

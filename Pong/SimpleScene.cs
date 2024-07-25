@@ -1,8 +1,7 @@
-using MoonWorks.Graphics;
-using MoonWorks.Input;
-using MoonWorks.Math.Float;
+using System.Numerics;
 using Riateu;
 using Riateu.Graphics;
+using Riateu.Inputs;
 
 namespace Pong;
 public class SimpleScene : Scene
@@ -55,19 +54,19 @@ public class SimpleScene : Scene
         }
     }
 
-    public override void Render(BackbufferTarget backbuffer)
+    public override void End()
+    {
+    }
+
+    public override void Render(RenderTarget backbuffer)
     {
         batch.Begin(Resource.Atlas, DrawSampler.PointClamp, camera);
         EntityList.Draw(batch);
         batch.Draw(Resource.PressStart2PFont, scoreText, new Vector2(PingPongGame.ViewportWidth * 0.5f, 0), Color.White, new Vector2(0.2f), FontAlignment.Center);
         batch.End(true);
 
-        RenderPass renderPass = backbuffer.BeginRendering(Color.Black);
+        RenderPass renderPass = GraphicsDevice.BeginTarget(backbuffer, Color.Black, true);
         batch.Render(renderPass);
-        backbuffer.EndRendering(renderPass);
-    }
-
-    public override void End()
-    {
+        GraphicsDevice.EndTarget(renderPass);
     }
 }
