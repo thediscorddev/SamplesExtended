@@ -6,14 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Riateu" Version="0.3.1" />
-  </ItemGroup>
-
- <ItemGroup>
-    <Content Include="../.sunpack-dep/Riateu/runtimes/lib64/**/*.*">
-      <Link>runtimes/linux-x64/native/%(Filename)%(Extension)</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <PackageReference Include="Riateu" Version="0.3.4" />
   </ItemGroup>
 
   <ItemGroup>
