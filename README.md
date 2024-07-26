@@ -2,11 +2,11 @@
 
 These are the samples projects from Riateu. All written in C#
 
-#### Current update: 07-26-2024
+#### Current update: 07-27-2024
 
 |Project|Description|Preview|
 |----|----|----|
 |[Pong](./Pong)|A simple 2-Player game|![preview](./Pong/preview.png)|
-|[BatchPerf](./BatchPerf)|Batch performance testing with thousands of quads rendering|![preview](./BatchPerf/preview.png)|
 |[ImGui](./ImGui)|ImGui rendering on Riateu|![preview](./ImGui/preview.png)|
+|[BatchPerf](./BatchPerf)|Batch performance testing with thousands of quads rendering|![preview](./BatchPerf/preview.png)|
 
