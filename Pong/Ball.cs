@@ -1,5 +1,6 @@
 using System.Numerics;
 using Riateu;
+using Riateu.Audios;
 using Riateu.Components;
 using Riateu.Graphics;
 using Riateu.Physics;
@@ -36,10 +37,12 @@ public class Ball : Entity
         if (PosY > PingPongGame.ViewportHeight - 8) 
         {
             Velocity.Y = -1;
+            Audio.PlaySound(Resource.BounceSound);
         }
         else if (PosY < 0) 
         {
             Velocity.Y = 1;
+            Audio.PlaySound(Resource.BounceSound);
         }
         base.Update(delta);
     }

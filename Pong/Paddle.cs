@@ -1,5 +1,6 @@
 using System.Numerics;
 using Riateu;
+using Riateu.Audios;
 using Riateu.Components;
 using Riateu.Inputs;
 using Riateu.Physics;
@@ -48,6 +49,7 @@ public class Paddle : Entity
             {
                 ball.Velocity.X *= -1;
                 ball.Velocity.Y += 100 * 0.005f;
+                Audio.PlaySound(Resource.HitSound);
             }
         }
         
