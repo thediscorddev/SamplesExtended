@@ -23,7 +23,7 @@ public class ImGuiGame : GameApp
 
     public override void LoadContent(AssetStorage storage)
     {
-        atlas = storage.CreateAtlas("Assets");
+        atlas = storage.CreateAtlas("Assets/Textures");
     }
 
     public static void Main() 
@@ -161,16 +161,16 @@ public class ImGuiGameLoop : GameLoop
         switch (num) 
         {
         case 0:
-            batch.Draw(atlas["Textures/pixeltriangle"], new Vector2(((512 / 2) - 48 / 2) + 24, ((320 / 2) - 48 / 2) + 24), Color.White, 
+            batch.Draw(atlas["pixeltriangle"], new Vector2(((512 / 2) - 48 / 2) + 24, ((320 / 2) - 48 / 2) + 24), Color.White, 
                 Vector2.One * 2, new Vector2(24, 24), triangleRotation, 1);
             break;
         case 1:
-            batch.Draw(atlas["Textures/iloveimgui"], new Vector2((512 / 2) - 92 / 2, (320 / 2) - 15 / 2.0f), Color.White);
+            batch.Draw(atlas["iloveimgui"], new Vector2((512 / 2) - 92 / 2, (320 / 2) - 15 / 2.0f), Color.White);
             break;
         case 2:
             foreach (var entity in imEntities) 
             {
-                batch.Draw(atlas["Textures/pixeltriangle"], entity.Pos + new Vector2(24), Color.White, Vector2.One, new Vector2(24), 
+                batch.Draw(atlas["pixeltriangle"], entity.Pos + new Vector2(24), Color.White, Vector2.One, new Vector2(24), 
                     triangleRotation * entity.Vel.X + entity.Vel.Y, 1);
             }
             break;

@@ -6,7 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Riateu" Version="0.3.6" />
+    <ProjectReference Include="../../Riateu/Riateu/Riateu.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- <PackageReference Include="Riateu" Version="0.3.6" /> -->
     <PackageReference Include="ImGui.NET" Version="1.90.1.1" />
   </ItemGroup>
 
