@@ -1,7 +1,6 @@
 .vscode/
 bin/
 obj/
-*.txt
 *.ini
 .sunpack-dep/
 .zed/

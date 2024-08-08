@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Riateu" Version="0.5.0" />
+    <PackageReference Include="Riateu" Version="0.8.0" />
   </ItemGroup>
 
   <ItemGroup>

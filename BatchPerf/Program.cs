@@ -8,7 +8,6 @@ using Riateu.Inputs;
 public class BatchPerf : GameApp
 {
     public static Texture TeuriaLogo;
-    public static Texture FontTexture;
     public static SpriteFont Font;
 
     public BatchPerf(WindowSettings settings, GraphicsSettings graphicsSettings) : base(settings, graphicsSettings)
@@ -18,8 +17,7 @@ public class BatchPerf : GameApp
     public override void LoadContent(AssetStorage storage)
     {
         TeuriaLogo = storage.LoadTexture("Assets/teuria-logo.png");
-        FontTexture = storage.LoadTexture("Assets/PressStart2P_0.png");
-        Font = storage.LoadFont("Assets/PressStart2P.fnt", FontTexture);
+        Font = storage.LoadFont("Assets/PressStart2P-Regular.ttf", 32);
     }
 
     public override GameLoop Initialize()
@@ -31,7 +29,7 @@ public class BatchPerf : GameApp
     {
         BatchPerf batchPerf = new BatchPerf(
             new WindowSettings("Batch Performance", 1024, 640),
-            GraphicsSettings.Default
+            GraphicsSettings.Vsync
         );
         batchPerf.Run();
     }
@@ -128,7 +126,7 @@ public class TestLoop : GameLoop
             // Creates new draw call
             batch.End(false);
         }
-        batch.Begin(BatchPerf.FontTexture, DrawSampler.PointClamp, camera);
+        batch.Begin(BatchPerf.Font.Texture, DrawSampler.PointClamp, camera);
         batch.Draw(BatchPerf.Font, $"FPS: {FPS}", Vector2.Zero, Color.White, new Vector2(0.2f));
         batch.Draw(BatchPerf.Font, $"Object Count: {count}", new Vector2(0, 20), Color.White, new Vector2(0.2f));
         batch.End(true);
