@@ -4,10 +4,11 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PublishAOT>true</PublishAOT>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Riateu" Version="0.8.1" />
+    <PackageReference Include="Riateu" Version="0.9.0" />
   </ItemGroup>
 
   <ItemGroup>

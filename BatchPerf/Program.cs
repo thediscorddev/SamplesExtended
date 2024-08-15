@@ -95,15 +95,16 @@ public class TestLoop : GameLoop
         Span<Teuria> teurias = Teurias.AsSpan();
         for (int i = 0; i < count; i++) 
         {
-            teurias[i].Position += teurias[i].Velocity;
+            ref Teuria teuria = ref teurias[i];
+            teuria.Position += teuria.Velocity;
 
-            if (teurias[i].Position.X + 32 > gameSize.X || teurias[i].Position.X < 0) 
+            if (teuria.Position.X + 32 > gameSize.X || teuria.Position.X < 0) 
             {
-                teurias[i].Velocity.X *= -1;
+                teuria.Velocity.X *= -1;
             }
-            if (teurias[i].Position.Y + 32 > gameSize.Y || teurias[i].Position.Y < 0) 
+            if (teuria.Position.Y + 32 > gameSize.Y || teuria.Position.Y < 0) 
             {
-                teurias[i].Velocity.Y *= -1;
+                teuria.Velocity.Y *= -1;
             }
         }
         FPS = Time.FPS;
@@ -124,12 +125,12 @@ public class TestLoop : GameLoop
             }
 
             // Creates new draw call
-            batch.End(false);
+            batch.End();
         }
         batch.Begin(BatchPerf.Font.Texture, DrawSampler.PointClamp, camera);
         batch.Draw(BatchPerf.Font, $"FPS: {FPS}", Vector2.Zero, Color.White, new Vector2(0.2f));
         batch.Draw(BatchPerf.Font, $"Object Count: {count}", new Vector2(0, 20), Color.White, new Vector2(0.2f));
-        batch.End(true);
+        batch.End();
 
         RenderPass renderPass = GraphicsDevice.BeginTarget(backbuffer, Color.CornflowerBlue, true);
         batch.Render(renderPass);

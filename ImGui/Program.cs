@@ -30,7 +30,7 @@ public class ImGuiGame : GameApp
     {
         ImGuiGame game = new ImGuiGame(
             new WindowSettings("ImGui App", 1024, 640),
-            GraphicsSettings.Default
+            GraphicsSettings.Vsync
         );
         game.Run();
     }
@@ -179,7 +179,7 @@ public class ImGuiGameLoop : GameLoop
             break;
         }
 
-        batch.End(true);
+        batch.End();
 
         RenderPass canvasPass = GraphicsDevice.BeginTarget(canvas, clearColor, true);
         batch.Render(canvasPass);
