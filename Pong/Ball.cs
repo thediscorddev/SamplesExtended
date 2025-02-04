@@ -26,12 +26,12 @@ public class Ball : Entity
 
     public Ball() 
     {
-        sprite = AnimatedSprite.Create(Resource.Atlas, Resource.Animations["pong/ball"]);
+        sprite = AnimatedSprite.Create(Resource.Animations["pong/ball"]);
         sprite.FPS = 10;
         sprite.Play("idle");
         AddComponent(sprite);
 
-        AddComponent(new PhysicsComponent(new AABB(this, new Rectangle(0, 0, 8, 8))));
+        AddComponent(new Collision(new AABB(this, new Rectangle(0, 0, 8, 8))));
         PosX_ = (int) Math.Round(((PingPongGame.ViewportWidth - 4)*50f));
         PosY_ = (int) Math.Round(PingPongGame.ViewportHeight * 50f);
         CalculatingThread = new Thread(Calculating);

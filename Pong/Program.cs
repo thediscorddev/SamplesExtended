@@ -12,7 +12,7 @@ internal interface Program
 
         var helloGame = new PingPongGame(
             new WindowSettings("Ping Pong", 512, 320, WindowMode.Windowed),
-            GraphicsSettings.Vsync
+            GraphicsSettings.Fast
         );
         helloGame.Run();
     }

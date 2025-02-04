@@ -82,9 +82,9 @@ public class SimpleScene : Scene
     {
     }
 
-    public override void Render(RenderTarget backbuffer)
+    public override void Render(CommandBuffer commandBuffer, RenderTarget backbuffer)
     {
-        batch.Begin(Resource.Atlas, DrawSampler.PointClamp, camera);
+        batch.Begin(Resource.Atlas.Data, DrawSampler.PointClamp, camera);
         EntityList.Draw(batch);
         batch.End();
         batch.Begin(Resource.PressStart2PFont.Texture, DrawSampler.PointClamp, camera);
@@ -92,7 +92,7 @@ public class SimpleScene : Scene
         batch.Draw(Resource.PressStart2PFont, scoreTexts, new Vector2(PingPongGame.ViewportWidth * 0.5f, 7f), Color.White, new Vector2(0.2f), FontAlignment.Center);
         batch.Draw(Resource.PressStart2PFont, DelayText, new Vector2(PingPongGame.ViewportWidth * 0.5f, PingPongGame.ViewportHeight*0.5f-10), Color.White, new Vector2(0.2f), FontAlignment.Center);
         batch.End();
-
+        batch.Flush(commandBuffer);
         RenderPass renderPass = GraphicsDevice.BeginTarget(backbuffer, Color.Black, true);
         batch.Render(renderPass);
         GraphicsDevice.EndTarget(renderPass);
