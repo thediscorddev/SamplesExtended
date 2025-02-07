@@ -13,6 +13,9 @@ public class PingPongGame : GameApp
     public const int ViewportWidth = 128;
     public const int ViewportHeight = 80;
 
+    public static int LastFrame = 0; // Used to track client position
+    public static int LastFrameServer = 0; //Used to track host position
+
     public PingPongGame(WindowSettings settings, GraphicsSettings graphicsSettings) : base(settings, graphicsSettings)
     {
     }

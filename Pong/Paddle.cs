@@ -21,7 +21,9 @@ public class Paddle : Entity
     private Thread CalculatingThread;
     private float axis = 0f;
     private bool ReadyToSubmit, ReadyToPlaySound = false;
+    private int LastSentTime = 0;
 
+    private int LastAxis = 0; // force update
     public Paddle(KeyCode up, KeyCode down, bool isOpponent = false, bool left = true)
     {
         IsOpponent = isOpponent;
@@ -61,19 +63,16 @@ public class Paddle : Entity
     {
         CurrentDelta = (float)delta;
         axis = GetAxis(up, down, CurrentDelta);
-        float changesInPosition = (float)Math.Floor(axis * Speed * CurrentDelta * 250) / 100;
-        PosY += changesInPosition;
-        if (changesInPosition != 0)
-        {
-            if (PingPongGame.IsClient) Console.Write("Client: ");
-            else Console.Write("Host: ");
-            Console.WriteLine(changesInPosition.ToString());
-        }
+        PosY += axis * 100 * CurrentDelta;
 
-        if (axis != 0)
+        if (axis != 0) ReadyToSubmit = true;
+        if (axis == 0 && LastAxis != 0)  // Ensure ReSync is called when movement stops
         {
-            ReadyToSubmit = true;
+            SocketThread.ReSync();
         }
+        LastAxis = (int)axis; // Update LastAxis after checking
+
+
         if (PosY > PingPongGame.ViewportHeight - 24)
         {
             PosY = PingPongGame.ViewportHeight - 24;
@@ -82,38 +81,31 @@ public class Paddle : Entity
         {
             PosY = 0;
         }
-        if (PingPongGame.IsClient == false)
+
+        sbyte lVal = left ? (sbyte)-1 : (sbyte)1;
+        if (area.CheckAll<Ball>(Vector2.Zero, out Ball ball))
         {
-            sbyte lVal = left ? (sbyte)-1 : (sbyte)1;
-            if (area.CheckAll<Ball>(Vector2.Zero, out Ball ball))
+            if (lVal == ball.Velocity.X)
             {
-                if (lVal == ball.Velocity.X)
-                {
-                    ball.Velocity.X *= -1;
-                    ball.Velocity.Y += 100 * 0.005f;
-                    SimpleScene.ball.PlaySound();
-                    ReadyToPlaySound = true;
-                }
+                ball.Velocity.X *= -1;
+                ball.Velocity.Y += 100 * 0.005f;
+                Audio.PlaySound(Resource.BounceSound);
             }
         }
+
         base.Update(CurrentDelta);
     }
 
     private int GetAxis(KeyCode up, KeyCode down, float delta)
     {
-        if (delayTick >= 0.02f)
+        if (Input.Keyboard.IsDown(up))
         {
-            delayTick = 0f;
-            if (Input.Keyboard.IsDown(up))
-            {
-                if (IsOpponent == false) return -1;
-            }
-            if (Input.Keyboard.IsDown(down))
-            {
-                if (IsOpponent == false) return 1;
-            }
+            if (IsOpponent == false) return -1;
         }
-        else delayTick += delta;
+        if (Input.Keyboard.IsDown(down))
+        {
+            if (IsOpponent == false) return 1;
+        }
         return 0;
     }
 }

@@ -33,6 +33,7 @@ public class SimpleScene : Scene
 
     public override void Begin()
     {
+        ball = new Ball();
         CurrentPlayer = new Paddle(KeyCode.Up, KeyCode.Down);
         CurrentPlayer.PosY = (PingPongGame.ViewportHeight * 0.5f) - 12;
         Add(CurrentPlayer);
@@ -47,7 +48,6 @@ public class SimpleScene : Scene
         Console.Write("     ");
         Console.WriteLine(Opponent.PosY);
         Console.WriteLine("______________");
-        ball = new Ball();
         ball.PosX = ((PingPongGame.ViewportWidth - 4)*0.5f);
         ball.PosY = (PingPongGame.ViewportHeight * 0.5f);
         Add(ball);

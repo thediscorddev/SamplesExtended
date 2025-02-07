@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -25,23 +26,25 @@ class SocketThread
             server.Start();
             string hostName = Dns.GetHostName();
             IPHostEntry hostEntry = Dns.GetHostEntry(hostName);
-            foreach(IPAddress address in hostEntry.AddressList)
+            foreach (IPAddress address in hostEntry.AddressList)
             {
-                if(address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                if (address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
                 {
-                    if(address.ToString() == "127.0.0.1") continue;
+                    if (address.ToString() == "127.0.0.1") continue;
                     Console.WriteLine("Available Connection address: " + address.ToString());
                 }
             }
             Console.WriteLine("Waiting...");
             Player = server.AcceptTcpClient();
+            Player.NoDelay = true;
             ConnectionThread_kick = new Thread(KickOffPlayerIfRoomIsFull);
             ConnectionThread_kick.Start();
             ConnectionThread = new Thread(HandleClient);
             ConnectionThread.Start();
             Console.Clear();
             Console.WriteLine("Player Connected! Starting the game..");
-        }catch(Exception e)
+        }
+        catch (Exception e)
         {
             Console.WriteLine("Exception: " + e.Message);
         }
@@ -53,25 +56,26 @@ class SocketThread
         NetworkStream stream = NewPlayer.GetStream();
         byte[] buffer = new byte[1024];
         int bytesRead;
-        while((bytesRead = stream.Read(buffer, 0, buffer.Length)) != 0)
+        while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) != 0)
         {
             string message = Encoding.ASCII.GetString(buffer, 0, bytesRead);
-            if(message == "StartedOrNot")
+            if (message == "StartedOrNot")
             {
-                if(PingPongGame.isStarted == false) sendClientMessage("Approxed");
-                else if(PingPongGame.isStarted == true && NewPlayer != Player) sendClientMessage("Disapproxed");
+                if (PingPongGame.isStarted == false) sendClientMessage("Approxed");
+                else if (PingPongGame.isStarted == true && NewPlayer != Player) sendClientMessage("Disapproxed");
                 else sendClientMessage("Disapproxed");
             }
         }
         KickOffPlayerIfRoomIsFull();
     }
-    public static bool CreateConnection(string address, int Port=8000)
+    public static bool CreateConnection(string address, int Port = 8000)
     {
         port = Port;
         try
         {
             TcpClient Server = new TcpClient(address, port);
             ServerConnection = Server;
+            ServerConnection.NoDelay = true;
             NetworkStream stream = Server.GetStream();
             string message = "StartedOrNot";
             sendServerMessage(message);
@@ -101,44 +105,69 @@ class SocketThread
     public static void HandleServer()
     {
         mutex.WaitOne();
-        while(true)
+        while (true)
         {
             NetworkStream stream = ServerConnection.GetStream();
             byte[] buffer = new byte[1024];
             int bytesRead;
-            while((bytesRead = stream.Read(buffer, 0, buffer.Length)) != 0)
+            while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) != 0)
             {
                 string message = Encoding.ASCII.GetString(buffer, 0, bytesRead);
                 var arg = message.Split(" ");
-                if(arg[0] == "Pos") {
-                    SimpleScene.Opponent.UpdatePos(float.Parse(arg[1]));
-                }else if(arg[0] == "BallPos")
+                if (arg[0] == "Pos")
                 {
-                    SimpleScene.ball.UpdatePosAndVelocity(int.Parse(arg[1]),int.Parse(arg[2]),float.Parse(arg[3]),float.Parse(arg[4]));
-                }else if(arg[0] == "PlaySound")
+                    bool allowedUpdate = false;
+                    if (PingPongGame.IsClient)
+                    {
+                        if (int.Parse(arg[2]) > PingPongGame.LastFrameServer)
+                        {
+                            allowedUpdate = true;
+                            PingPongGame.LastFrameServer = int.Parse(arg[2]);
+                        }
+                        //client
+
+                    }
+                    if (allowedUpdate) SimpleScene.Opponent.UpdatePos(float.Parse(arg[1]));
+                }
+                else if (arg[0] == "BallPos")
+                {
+                    long ms = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - long.Parse(arg[5]);
+                    float newX = float.Parse(arg[1]) + float.Parse(arg[3]) * ms/10;
+                    float newY = float.Parse(arg[2])+ float.Parse(arg[4]) * ms/10;
+                    SimpleScene.ball.UpdatePosAndVelocity((int) newX, (int) newY, float.Parse(arg[3]), float.Parse(arg[4]));
+                }
+                else if (arg[0] == "PlaySound")
                 {
                     SimpleScene.ball.PlaySound();
-                }else if(arg[0] == "Score")
+                }
+                else if (arg[0] == "Score")
                 {
-                    SimpleScene.UpdateScoreAndResetBall(int.Parse(arg[2]),int.Parse(arg[1]));
-                }else if(arg[0] == "StartingCooldown")
+                    SimpleScene.UpdateScoreAndResetBall(int.Parse(arg[2]), int.Parse(arg[1]));
+                }
+                else if (arg[0] == "StartingCooldown")
                 {
-                    SimpleScene.DelayText = "Starting in "+ arg[1] + " seconds...";
-                    if(int.Parse(arg[1]) <= 0) SimpleScene.DelayText = "";
+                    SimpleScene.DelayText = "Starting in " + arg[1] + " seconds...";
+                    if (int.Parse(arg[1]) <= 0) SimpleScene.DelayText = "";
+                }
+                else if (arg[0] == "paddleresync")
+                {
+                    SimpleScene.Opponent.UpdatePos(float.Parse(arg[1]));
+                    SimpleScene.CurrentPlayer.UpdatePos(float.Parse(arg[2]));
                 }
             }
         }
-        
+
     }
     public static void BoardCastBallPositionChange(int dx, int dy, float vdx, float vdy)
     {
-        string message = "BallPos " + dx.ToString() + " " + dy.ToString() + " " + vdx.ToString() + " " + vdy.ToString() + " ";
+        string message = "BallPos " + dx.ToString() + " " + dy.ToString() + " " + vdx.ToString() + " " + vdy.ToString() + " " + DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString() + " ";
         sendClientMessage(message);
     }
     public static void sendClientMessage(string message)
     {
         Thread.Sleep(150);
-        if(PingPongGame.IsClient == false) {
+        if (PingPongGame.IsClient == false)
+        {
             NetworkStream stream = Player.GetStream();
             byte[] messageAsByte = Encoding.ASCII.GetBytes(message);
             stream.Write(messageAsByte, 0, messageAsByte.Length);
@@ -146,7 +175,8 @@ class SocketThread
     }
     public static void sendServerMessage(string message)
     {
-        if(PingPongGame.IsClient==true) {
+        if (PingPongGame.IsClient == true)
+        {
             NetworkStream stream = ServerConnection.GetStream();
             byte[] messageAsByte = Encoding.ASCII.GetBytes(message);
             stream.Write(messageAsByte, 0, messageAsByte.Length);
@@ -159,23 +189,41 @@ class SocketThread
     }
     public static void HandleClient()
     {
-        while(true) {
+        while (true)
+        {
             NetworkStream stream = Player.GetStream();
             byte[] buffer = new byte[1024];
             int bytesRead;
-            while((bytesRead = stream.Read(buffer, 0, buffer.Length)) != 0)
+            while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) != 0)
             {
                 string message = Encoding.ASCII.GetString(buffer, 0, bytesRead);
-                if(message.Split(" ")[0] == "Pos") {
-                    SimpleScene.Opponent.UpdatePos(float.Parse(message.Split(" ")[1]));
-                }
-                if(message == "StartedOrNot")
+                if (message.Split(" ")[0] == "Pos")
                 {
-                    if(PingPongGame.isStarted == false) {
+                    bool allowedUpdate = false;
+                    if (!PingPongGame.IsClient)
+                    {
+                        //host
+
+                        if (int.Parse(message.Split(" ")[2]) > PingPongGame.LastFrame)
+                        {
+                            allowedUpdate = true;
+                            PingPongGame.LastFrame = int.Parse(message.Split(" ")[2]);
+                        }
+                    }
+                    if (allowedUpdate) SimpleScene.Opponent.UpdatePos(float.Parse(message.Split(" ")[1]));
+                }
+                if (message == "StartedOrNot")
+                {
+                    if (PingPongGame.isStarted == false)
+                    {
                         PingPongGame.isStarted = true;
                         sendClientMessage("Approxed");
                     }
                     else sendClientMessage("Disapproxed");
+                }
+                if (message.Split(" ")[0] == "resyncpaddle")
+                {
+                    sendClientMessage("paddleresync " + SimpleScene.CurrentPlayer.PosY.ToString() + " " + SimpleScene.Opponent.PosY.ToString() + " ");
                 }
             }
         }
@@ -185,10 +233,26 @@ class SocketThread
     {
         sendClientMessage("Score " + ServerScore.ToString() + " " + ClientScore + " ");
     }
+    public static void ReSync()
+    {
+        if (PingPongGame.IsClient)
+        {
+            //Send position requirement to the host
+            sendServerMessage("resyncpaddle ");
+        }
+    }
     public static void SubmitChanges(float BallPositionChanges)
     {
         string message = "Pos " + BallPositionChanges.ToString() + " ";
-        if(PingPongGame.IsClient == true) sendServerMessage(message);
-        else sendClientMessage(message);
+        if (PingPongGame.IsClient == true)
+        {
+            sendServerMessage(message + PingPongGame.LastFrame.ToString() + " ");
+            PingPongGame.LastFrame++;
+        }
+        else
+        {
+            sendClientMessage(message + PingPongGame.LastFrameServer.ToString() + " ");
+            PingPongGame.LastFrameServer++;
+        }
     }
 }
