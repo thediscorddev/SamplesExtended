@@ -113,7 +113,7 @@ public class Ball : Entity
         else if (startingDelay >= 3f) delay += CurrentDelta;
         if (PingPongGame.IsClient == false)
         {
-            if (delay_ >= 0.12f)
+            if (delay_ >= 0.085f)
             {
                 delay_ = 0f;
                 ReadyToSubmit = true;

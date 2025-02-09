@@ -85,7 +85,8 @@ public class Paddle : Entity
         sbyte lVal = left ? (sbyte)-1 : (sbyte)1;
         if (area.CheckAll<Ball>(Vector2.Zero, out Ball ball))
         {
-            if (lVal == ball.Velocity.X)
+            int side = (PingPongGame.IsClient)?-1:1;
+            if (lVal == side*ball.Velocity.X)
             {
                 ball.Velocity.X *= -1;
                 ball.Velocity.Y += 100 * 0.005f;
